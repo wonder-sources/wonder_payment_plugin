@@ -1,6 +1,6 @@
 name: wonder_payment_plugin
 description: "Wonder Flutter Payment SDK for iOS and Android devices"
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/wonder-sources/wonder_payment_plugin
 
 environment:

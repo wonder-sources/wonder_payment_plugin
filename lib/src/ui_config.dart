@@ -11,11 +11,12 @@ class UIConfig {
   Color? secondaryButtonBackground;
   Color? primaryButtonColor;
   Color? primaryButtonBackground;
-  Color? primaryButtonDisableBackground;
   Color? textFieldBackground;
   Color? linkColor;
   Color? errorColor;
+  Color? borderColor;
   double? borderRadius;
+  Color? dividerColor;
   DisplayStyle? displayStyle;
   bool? showResult;
   bool? paymentRetriesEnabled;
@@ -29,11 +30,12 @@ class UIConfig {
     this.secondaryButtonBackground,
     this.primaryButtonColor,
     this.primaryButtonBackground,
-    this.primaryButtonDisableBackground,
     this.textFieldBackground,
     this.linkColor,
     this.errorColor,
+    this.borderColor,
     this.borderRadius,
+    this.dividerColor,
     this.displayStyle,
     this.showResult,
     this.paymentRetriesEnabled,
@@ -51,12 +53,12 @@ class UIConfig {
     config.primaryButtonColor = parseColor(json["primaryButtonColor"]);
     config.primaryButtonBackground =
         parseColor(json["primaryButtonBackground"]);
-    config.primaryButtonDisableBackground =
-        parseColor(json["primaryButtonDisableBackground"]);
     config.textFieldBackground = parseColor(json["textFieldBackground"]);
     config.linkColor = parseColor(json["linkColor"]);
     config.errorColor = parseColor(json["errorColor"]);
+    config.borderColor = parseColor(json["borderColor"]);
     config.borderRadius = json["borderRadius"];
+    config.dividerColor = parseColor(json["dividerColor"]);
     config.displayStyle = DisplayStyle.from(json["displayStyle"]);
     config.showResult = json["showResult"];
     config.paymentRetriesEnabled = json["paymentRetriesEnabled"];
@@ -73,11 +75,12 @@ class UIConfig {
       'secondaryButtonBackground': secondaryButtonBackground?.hex,
       'primaryButtonColor': primaryButtonColor?.hex,
       'primaryButtonBackground': primaryButtonBackground?.hex,
-      'primaryButtonDisableBackground': primaryButtonDisableBackground?.hex,
       'textFieldBackground': textFieldBackground?.hex,
       'linkColor': linkColor?.hex,
       'errorColor': errorColor?.hex,
+      'borderColor': borderColor?.hex,
       'borderRadius': borderRadius,
+      'dividerColor': dividerColor?.hex,
       'displayStyle': displayStyle?.rawValue,
       'showResult': showResult,
       'paymentRetriesEnabled': paymentRetriesEnabled,

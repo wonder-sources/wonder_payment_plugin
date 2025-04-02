@@ -1,3 +1,6 @@
+## 1.0.1
+Update the README documentation.
+
 ## 1.0.0
 
 The Wonder Payment Plugin is a powerful and versatile Flutter plugin designed to streamline in-app payment integration for both iOS and Android platforms. With its developer-friendly architecture, it simplifies the implementation of payment systems while offering extensive customization and robust security.

@@ -16,11 +16,10 @@ The Wonder Payment Plugin is a powerful and versatile Flutter plugin designed to
 
 ```js
 dependencies:
-  wonder_payment_plugin: ^1.0.0
+  wonder_payment_plugin: ^1.0.1
 ```
-
 #### 2. If it is iOS, 
-in your <font color="green">Info.plist</font>, add the following lines:
+##### In your <font color="green">Info.plist</font>, add the following lines:
 
 ```js
 <key>CFBundleURLTypes</key>
@@ -37,8 +36,25 @@ in your <font color="green">Info.plist</font>, add the following lines:
   </dict>
 </array>
 ```
+###### This is configuration of whitelist 
+```js
+<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>weixin</string>
+		<string>weixinULAPI</string>
+		<string>weixinURLParamsAPI</string>
+		<string>uppaysdk</string>
+		<string>uppaywallet</string>
+		<string>uppayx1</string>
+		<string>uppayx2</string>
+		<string>uppayx3</string>
+        <string>octopus</string>
+        <string>alipayhk</string>
+        <string>alipays</string>
+	</array>
+```
 
-If you use <font color="orange">Wechat Pay</font>, you must add a dependency
+##### If you use <font color="orange">Wechat Pay</font>, you must add a dependency
 
 
 ```js
@@ -56,21 +72,30 @@ If you use <font color="orange">Wechat Pay</font>, you must add a dependency
 	</dict>
 </array>
 ```
+#### 3. If it is Android:
+##### 1.In your <font color="green">android/build.gradle</font> add the following lines:
 
-If Android:
+```js
+dependencyResolutionManagement {
+  repositories {
+    mavenCentral()
+    maven {
+      url 'https://raw.githubusercontent.com/wonder-sources/WonderPayment-Android/master'
+    }
+  }
+}
+```
 
-Create an empty Activity in the application package name directory and add the following to the manifest file:
+##### 2. Create an empty Activity in the application package name directory and add the following to the manifest file:
 ```js
 <activity-alias
     android:name=".wxapi.WXPayEntryActivity"
     android:exported="true"
     android:targetActivity="com.wonder.payment.sdk.wxapi.WXPayEntryResultActivity" />
-        android:targetActivity="com.wonder.payment.sdk.wxapi.WXPayEntryResultActivity" />
 ```
+#### 4. If iOS
 
-#### 3. If iOS
-
-In your AppDelegate.swift add the following lines:
+##### In your AppDelegate.swift add the following lines:
 ```js
 func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
     return WonderPayment.handleOpenURL(url: url)
@@ -80,7 +105,6 @@ func application(_ app: UIApplication, open url: URL, options: [UIApplication.Op
     return WonderPayment.handleOpenURL(url: url)
 }
 ```
-
 
 ### Initiate the SDK
 To initiate the SDK, customer needs know:
