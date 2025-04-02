@@ -39,19 +39,19 @@ dependencies:
 ###### This is configuration of whitelist 
 ```js
 <key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>weixin</string>
-		<string>weixinULAPI</string>
-		<string>weixinURLParamsAPI</string>
-		<string>uppaysdk</string>
-		<string>uppaywallet</string>
-		<string>uppayx1</string>
-		<string>uppayx2</string>
-		<string>uppayx3</string>
-        <string>octopus</string>
-        <string>alipayhk</string>
-        <string>alipays</string>
-	</array>
+<array>
+  <string>weixin</string>
+  <string>weixinULAPI</string>
+  <string>weixinURLParamsAPI</string>
+  <string>uppaysdk</string>
+  <string>uppaywallet</string>
+  <string>uppayx1</string>
+  <string>uppayx2</string>
+  <string>uppayx3</string>
+  <string>octopus</string>
+  <string>alipayhk</string>
+  <string>alipays</string>
+</array>
 ```
 
 ##### If you use <font color="orange">Wechat Pay</font>, you must add a dependency
@@ -60,16 +60,16 @@ dependencies:
 ```js
 <key>CFBundleURLTypes</key>
 <array>
-	<dict>
-		<key>CFBundleTypeRole</key>
-		<string>Editor</string>
-		<key>CFBundleURLName</key>
-		<string>wechat_pay</string>
-		<key>CFBundleURLSchemes</key>
-		<array>
-			<string>YOUR_WECHAT_APP_ID</string>
-		</array>
-	</dict>
+  <dict>
+    <key>CFBundleTypeRole</key>
+    <string>Editor</string>
+    <key>CFBundleURLName</key>
+    <string>wechat_pay</string>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>YOUR_WECHAT_APP_ID</string>
+    </array>
+  </dict>
 </array>
 ```
 #### 3. If it is Android:
