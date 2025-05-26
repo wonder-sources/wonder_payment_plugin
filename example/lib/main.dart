@@ -81,7 +81,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future selectMethod() async {
-    var result = await WonderPaymentPlugin.select(TransactionType.sale);
+    var result = await WonderPaymentPlugin.select();
     paymentIntent.paymentMethod = result;
     if (result != null) {
       setState(() {

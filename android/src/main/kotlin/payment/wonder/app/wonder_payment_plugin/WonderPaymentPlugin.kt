@@ -6,7 +6,6 @@ import android.util.Log
 import com.wonder.payment.sdk.PaymentController
 import com.wonder.payment.sdk.WonderPayment
 import com.wonder.payment.sdk.model.PaymentResult
-import com.wonder.payment.sdk.model.TransactionType
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -87,8 +86,7 @@ class WonderPaymentPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 }
             }
         } else if (call.method == "select") {
-            val transactionType = DataConvert.transactionTypeFromString(call.arguments as String)
-            WonderPayment.select(activity, transactionType) {
+            WonderPayment.select(activity) {
                 if (it != null) {
                     result.success(DataConvert.toMap(it))
                 } else {
@@ -144,6 +142,17 @@ class WonderPaymentPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 }
             } else {
                 result.success(false)
+            }
+        } else if (call.method == "addCard") {
+            val cardInputModel = DataConvert.toCardInputModel(call.arguments as Map<String, Any?>)
+            WonderPayment.addCard(
+                activity, cardInputModel
+            ) { token, error ->
+                if (error != null) {
+                    result.error(error.errorCode, error.errorMsg, error.errorMsg)
+                } else if (token != null) {
+                    result.success(DataConvert.toMap(token))
+                }
             }
         } else {
             result.notImplemented()

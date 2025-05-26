@@ -1,6 +1,5 @@
 import 'extra.dart';
 import 'line_item.dart';
-import 'transaction_type.dart';
 import 'payment_method.dart';
 
 class PaymentIntent {
@@ -8,8 +7,8 @@ class PaymentIntent {
   String currency;
   String orderNumber;
   PaymentMethod? paymentMethod;
-  TransactionType transactionType = TransactionType.sale;
   List<LineItem>? lineItems;
+  bool preAuthModeForSales;
   Extra? extra;
 
   PaymentIntent({
@@ -17,8 +16,8 @@ class PaymentIntent {
     required this.currency,
     required this.orderNumber,
     this.paymentMethod,
-    this.transactionType = TransactionType.sale,
     this.lineItems,
+    this.preAuthModeForSales = false,
     this.extra,
   });
 
@@ -35,8 +34,8 @@ class PaymentIntent {
       currency: currency,
       orderNumber: orderNumber,
       paymentMethod: method,
-      transactionType: transactionType,
       lineItems: lineItems?.map((e) => e).toList(),
+      preAuthModeForSales: preAuthModeForSales,
       extra: extra?.copy(),
     );
   }
@@ -54,8 +53,8 @@ class PaymentIntent {
       paymentMethod: json['paymentMethod'] != null
           ? PaymentMethod.fromJson(json['paymentMethod'])
           : null,
-      transactionType: TransactionType.from(json['transactionType']),
       lineItems: lineItems,
+      preAuthModeForSales: json['preAuthModeForSales'],
       extra: Extra.fromJson(json['extra']),
     );
   }
@@ -66,8 +65,8 @@ class PaymentIntent {
       'currency': currency,
       'orderNumber': orderNumber,
       'paymentMethod': paymentMethod?.toJson(),
-      'transactionType': transactionType.rawValue,
       'lineItems': lineItems?.map((e) => e.toJson()).toList(),
+      'preAuthModeForSales': preAuthModeForSales,
       'extra': extra?.toJson(),
     };
   }

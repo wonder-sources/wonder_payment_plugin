@@ -45,7 +45,7 @@ abstract class WonderPaymentPluginPlatform extends PlatformInterface {
     throw UnimplementedError('present() has not been implemented.');
   }
 
-  Future<PaymentMethod?> select(TransactionType transactionType) {
+  Future<PaymentMethod?> select() {
     throw UnimplementedError('select() has not been implemented.');
   }
 
@@ -69,5 +69,9 @@ abstract class WonderPaymentPluginPlatform extends PlatformInterface {
 
   Future<PaymentResult?> getPaymentResult(String sessionId) {
     throw UnimplementedError('getPaymentResult() has not been implemented.');
+  }
+
+  Future<Map> addCard(Map cardArgs) {
+    throw UnimplementedError('addCard() has not been implemented.');
   }
 }

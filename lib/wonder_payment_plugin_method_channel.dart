@@ -67,11 +67,8 @@ class MethodChannelWonderPaymentPlugin extends WonderPaymentPluginPlatform {
   }
 
   @override
-  Future<PaymentMethod?> select(TransactionType transactionType) async {
-    final resultJson = await methodChannel.invokeMethod(
-      'select',
-      transactionType.rawValue,
-    );
+  Future<PaymentMethod?> select() async {
+    final resultJson = await methodChannel.invokeMethod('select');
     if (resultJson is Map) {
       return PaymentMethod.fromJson(resultJson.cast<String, dynamic>());
     } else {
@@ -130,5 +127,13 @@ class MethodChannelWonderPaymentPlugin extends WonderPaymentPluginPlatform {
     } else {
       return null;
     }
+  }
+
+  @override
+  Future<Map> addCard(Map cardArgs) async {
+    return await methodChannel.invokeMethod(
+      'addCard',
+      cardArgs,
+    );
   }
 }

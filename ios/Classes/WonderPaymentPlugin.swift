@@ -54,15 +54,7 @@ public class WonderPaymentPlugin: NSObject, FlutterPlugin {
                 result(paymentResult.toJson())
             }
         case "select":
-            guard let type = call.arguments as? String else {
-                result(argumentsError)
-                return
-            }
-            guard let transactionType = TransactionType(rawValue: type) else {
-                result(argumentsError)
-                return
-            }
-            WonderPayment.select(transactionType: transactionType) {
+            WonderPayment.select() {
                 paymentMethod in
                 result(paymentMethod.toJson())
             }
@@ -106,6 +98,20 @@ public class WonderPaymentPlugin: NSObject, FlutterPlugin {
             WonderPayment.getPaymentResult(sessionId: sessionId) {
                 paymentResult in
                 result(paymentResult.toJson())
+            }
+        case "addCard":
+            guard let args = call.arguments as? NSDictionary else {
+                result(argumentsError)
+                return
+            }
+            WonderPayment.addCard(args) { card, error in
+                if let card {
+                    result(card)
+                } else if let error {
+                    let code = error["code"] as? String ?? ""
+                    let message = error["message"] as? String ?? ""
+                    result(FlutterError(code: code, message: message, details: nil))
+                }
             }
         default:
             result(FlutterMethodNotImplemented)

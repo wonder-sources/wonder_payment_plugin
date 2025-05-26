@@ -1,7 +1,7 @@
 package payment.wonder.app.wonder_payment_plugin
 
 import android.graphics.Color
-import com.wonder.payment.sdk.model.CardModel
+import com.wonder.payment.sdk.model.CardInputModel
 import com.wonder.payment.sdk.model.CreditCard
 import com.wonder.payment.sdk.model.DisplayStyle
 import com.wonder.payment.sdk.model.Extra
@@ -12,7 +12,7 @@ import com.wonder.payment.sdk.model.PaymentConfig
 import com.wonder.payment.sdk.model.PaymentEnv
 import com.wonder.payment.sdk.model.PaymentIntent
 import com.wonder.payment.sdk.model.PaymentMethod
-import com.wonder.payment.sdk.model.TransactionType
+import com.wonder.payment.sdk.model.PaymentTokenModel
 import com.wonder.payment.sdk.model.UIConfig
 import java.util.Locale
 
@@ -39,19 +39,26 @@ object DataConvert {
                 )
             },
             "originalBusinessId" to paymentConfig.originalBusinessId,
+            "fromScheme" to paymentConfig.fromScheme,
         )
     }
 
     fun toMap(uiConfig: UIConfig): Map<String, Any?> {
         return mapOf(
             "background" to intToHexColor(uiConfig.background),
+            "secondaryBackground" to intToHexColor(uiConfig.secondaryBackground),
             "primaryTextColor" to intToHexColor(uiConfig.primaryTextColor),
             "secondaryTextColor" to intToHexColor(uiConfig.secondaryTextColor),
-            "secondaryButtonColor" to intToHexColor(uiConfig.secondaryButtonColor),
-            "secondaryButtonBackground" to intToHexColor(uiConfig.secondaryButtonBackground),
             "primaryButtonColor" to intToHexColor(uiConfig.primaryButtonColor),
             "primaryButtonBackground" to intToHexColor(uiConfig.primaryButtonBackground),
-            "lineColor" to intToHexColor(uiConfig.lineColor),
+            "secondaryButtonColor" to intToHexColor(uiConfig.secondaryButtonColor),
+            "secondaryButtonBackground" to intToHexColor(uiConfig.secondaryButtonBackground),
+            "textFieldBackground" to intToHexColor(uiConfig.textFieldBackground),
+            "linkColor" to intToHexColor(uiConfig.linkColor),
+            "successColor" to intToHexColor(uiConfig.successColor),
+            "errorColor" to intToHexColor(uiConfig.errorColor),
+            "borderColor" to intToHexColor(uiConfig.borderColor),
+            "dividerColor" to intToHexColor(uiConfig.dividerColor),
             "borderRadius" to uiConfig.borderRadius,
             "showResult" to uiConfig.showResult,
             "paymentRetriesEnabled" to uiConfig.paymentRetriesEnabled,
@@ -61,18 +68,20 @@ object DataConvert {
 
     fun toMap(paymentMethod: PaymentMethod): Map<String, Any?> {
         val data = paymentMethod.data?.let {
-            if (it is CardModel) {
+            if (it is PaymentTokenModel) {
                 mapOf(
-                    "brand" to it.creditCard.brand,
-                    "exp_year" to it.creditCard.expYear,
-                    "exp_month" to it.creditCard.expMonth,
-                    "number" to it.creditCard.number,
-                    "holder_name" to it.creditCard.holderName,
+                    "brand" to it.creditCard?.brand,
+                    "exp_year" to it.creditCard?.expYear,
+                    "exp_month" to it.creditCard?.expMonth,
+                    "number" to it.creditCard?.number,
+                    "holder_name" to it.creditCard?.holderName,
                     "token" to it.token,
                     "default" to it.isDefault,
                     "state" to it.state,
                     "token_type" to it.tokenType
                 )
+            } else if (it is Map<*, *>) {
+                it
             } else {
                 null
             }
@@ -82,6 +91,22 @@ object DataConvert {
             "arguments" to data,
         )
     }
+
+
+    fun toMap(tokenModel: PaymentTokenModel): Map<String, Any?> {
+        return mapOf(
+            "brand" to tokenModel.creditCard?.brand,
+            "exp_year" to tokenModel.creditCard?.expYear,
+            "exp_month" to tokenModel.creditCard?.expMonth,
+            "number" to tokenModel.creditCard?.number,
+            "holder_name" to tokenModel.creditCard?.holderName,
+            "token" to tokenModel.token,
+            "default" to tokenModel.isDefault,
+            "state" to tokenModel.state,
+            "token_type" to tokenModel.tokenType
+        )
+    }
+
 
     fun toPaymentConfig(map: Map<String, Any?>): PaymentConfig {
         val wechat = map["wechat"] as Map<String, String?>?
@@ -102,13 +127,16 @@ object DataConvert {
                     merchantName = googlePay["merchantName"]!!,
                 )
             },
+            fromScheme = map["fromScheme"] as String?,
             originalBusinessId = map["originalBusinessId"] as String?
         )
     }
 
+
     fun toUIConfig(map: Map<String, Any?>): UIConfig {
         val uiConfig = UIConfig()
         parseColor(map["background"])?.let { uiConfig.background = it }
+        parseColor(map["secondaryBackground"])?.let { uiConfig.secondaryBackground = it }
         parseColor(map["primaryTextColor"])?.let { uiConfig.primaryTextColor = it }
         parseColor(map["secondaryTextColor"])?.let { uiConfig.secondaryTextColor = it }
         parseColor(map["primaryButtonColor"])?.let { uiConfig.primaryButtonColor = it }
@@ -117,8 +145,12 @@ object DataConvert {
         parseColor(map["secondaryButtonBackground"])?.let {
             uiConfig.secondaryButtonBackground = it
         }
-        parseColor(map["lineColor"])?.let { uiConfig.lineColor = it }
-
+        parseColor(map["textFieldBackground"])?.let { uiConfig.textFieldBackground = it }
+        parseColor(map["linkColor"])?.let { uiConfig.linkColor = it }
+        parseColor(map["successColor"])?.let { uiConfig.successColor = it }
+        parseColor(map["errorColor"])?.let { uiConfig.errorColor = it }
+        parseColor(map["borderColor"])?.let { uiConfig.borderColor = it }
+        parseColor(map["dividerColor"])?.let { uiConfig.dividerColor = it }
         map["borderRadius"]?.let { uiConfig.borderRadius = (it as Double).toFloat() }
         map["showResult"]?.let { uiConfig.showResult = it as Boolean }
         map["paymentRetriesEnabled"]?.let { uiConfig.paymentRetriesEnabled = it as Boolean }
@@ -146,7 +178,7 @@ object DataConvert {
         }
 
         var extraModel: Extra? = null
-        if(extra != null){
+        if (extra != null) {
             extraModel = Extra(extra["sessionId"] as String?)
         }
 
@@ -154,10 +186,10 @@ object DataConvert {
             amount = map["amount"] as Double,
             currency = map["currency"] as String,
             orderNumber = map["orderNumber"] as String,
+            preAuthModeForSales = map["preAuthModeForSales"] as Boolean,
             paymentMethod = paymentMethod?.let {
                 toPaymentMethod(it)
             },
-            transactionType = transactionTypeFromString(map["transactionType"] as String),
             lineItems = lineItemList,
             extra = extraModel
         )
@@ -169,7 +201,7 @@ object DataConvert {
 
         val data = arguments?.let {
             if (payType == PayType.CREDIT_CARD) {
-                CardModel(
+                PaymentTokenModel(
                     arguments["token_type"] as String,
                     arguments["token"] as String,
                     arguments["state"] as String,
@@ -190,6 +222,22 @@ object DataConvert {
         }
 
         return PaymentMethod(payType, data)
+    }
+
+    fun toCardInputModel(map: Map<String, Any?>): CardInputModel {
+        val billingAddress = map["billing_address"] as Map<String, Any?>
+
+        val cardInput = CardInputModel(
+            number = map["number"] as String,
+            expMonth = map["exp_month"] as String,
+            expYear = map["exp_year"] as String,
+            cvv = map["cvv"] as String,
+            holderName = map["holder_name"] as String,
+            firstName = billingAddress["first_name"] as String,
+            lastName = billingAddress["last_name"] as String,
+            phoneNumber = billingAddress["phone_number"] as String,
+        )
+        return cardInput
     }
 
     private fun parseColor(value: Any?): Int? {
@@ -237,10 +285,6 @@ object DataConvert {
             DisplayStyle.CONFIRM -> "confirm"
             else -> "oneClick"
         }
-    }
-
-    fun transactionTypeFromString(strValue: String): TransactionType {
-        return TransactionType.values().find { it.type == strValue } ?: TransactionType.SALE
     }
 
 }

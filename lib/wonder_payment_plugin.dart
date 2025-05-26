@@ -3,7 +3,6 @@ import 'package:wonder_payment_plugin/src/payment_method.dart';
 import 'src/payment_config.dart';
 import 'src/payment_intent.dart';
 import 'src/payment_result.dart';
-import 'src/transaction_type.dart';
 import 'src/ui_config.dart';
 import 'wonder_payment_plugin_platform_interface.dart';
 
@@ -11,7 +10,6 @@ export 'src/line_item.dart';
 export 'src/payment_intent.dart';
 export 'src/payment_result.dart';
 export 'src/payment_method.dart';
-export 'src/transaction_type.dart';
 export 'src/payment_environment.dart';
 export 'src/payment_config.dart';
 export 'src/ui_config.dart';
@@ -46,8 +44,8 @@ class WonderPaymentPlugin {
     return WonderPaymentPluginPlatform.instance.present(intent);
   }
 
-  static Future<PaymentMethod?> select(TransactionType transactionType) async {
-    return WonderPaymentPluginPlatform.instance.select(transactionType);
+  static Future<PaymentMethod?> select() async {
+    return WonderPaymentPluginPlatform.instance.select();
   }
 
   static Future<PaymentResult?> pay(PaymentIntent intent) async {
@@ -71,5 +69,9 @@ class WonderPaymentPlugin {
 
   static Future<PaymentResult?> getPaymentResult(String sessionId) {
     return WonderPaymentPluginPlatform.instance.getPaymentResult(sessionId);
+  }
+
+  static Future<Map> addCard(Map cardArgs) {
+    return WonderPaymentPluginPlatform.instance.addCard(cardArgs);
   }
 }

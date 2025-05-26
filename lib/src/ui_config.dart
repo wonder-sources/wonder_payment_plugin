@@ -13,6 +13,7 @@ class UIConfig {
   Color? primaryButtonBackground;
   Color? textFieldBackground;
   Color? linkColor;
+  Color? successColor;
   Color? errorColor;
   Color? borderColor;
   double? borderRadius;
@@ -32,6 +33,7 @@ class UIConfig {
     this.primaryButtonBackground,
     this.textFieldBackground,
     this.linkColor,
+    this.successColor,
     this.errorColor,
     this.borderColor,
     this.borderRadius,
@@ -55,6 +57,7 @@ class UIConfig {
         parseColor(json["primaryButtonBackground"]);
     config.textFieldBackground = parseColor(json["textFieldBackground"]);
     config.linkColor = parseColor(json["linkColor"]);
+    config.successColor = parseColor(json["successColor"]);
     config.errorColor = parseColor(json["errorColor"]);
     config.borderColor = parseColor(json["borderColor"]);
     config.borderRadius = json["borderRadius"];
@@ -77,6 +80,7 @@ class UIConfig {
       'primaryButtonBackground': primaryButtonBackground?.hex,
       'textFieldBackground': textFieldBackground?.hex,
       'linkColor': linkColor?.hex,
+      'successColor': successColor?.hex,
       'errorColor': errorColor?.hex,
       'borderColor': borderColor?.hex,
       'borderRadius': borderRadius,
