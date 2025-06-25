@@ -1,5 +1,10 @@
+## 1.0.2
+1. Fix the obfuscation conflict issue of Android
+
 ## 1.0.1
-Update the README documentation.
+1. Added support for pre-authorization transactions and password-free payments
+2. Color style customization adjustments
+3. Update the README documentation.
 
 ## 1.0.0
 
