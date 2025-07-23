@@ -113,6 +113,7 @@ class WonderPaymentPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
             }
         } else if (call.method == "preview") {
             WonderPayment.preview(activity)
+            result.success(null)
         } else if (call.method == "getDefaultPaymentMethod") {
             WonderPayment.getDefaultPaymentMethod {
                 if (it != null) {

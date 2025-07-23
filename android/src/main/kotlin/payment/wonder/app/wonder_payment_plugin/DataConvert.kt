@@ -202,19 +202,21 @@ object DataConvert {
         val data = arguments?.let {
             if (payType == PayType.CREDIT_CARD) {
                 PaymentTokenModel(
-                    arguments["token_type"] as String,
-                    arguments["token"] as String,
-                    arguments["state"] as String,
-                    null,
-                    "",
-                    (arguments["default"] ?: false) as Boolean,
-                    CreditCard(
-                        arguments["number"] as String,
-                        arguments["exp_month"] as String,
-                        arguments["exp_year"] as String,
-                        arguments["holder_name"] as String,
-                        arguments["brand"] as String,
-                    )
+                    tokenType = arguments["token_type"] as String,
+                    token = arguments["token"] as String,
+                    state = arguments["state"] as String,
+                    verifyUrl = null,
+                    verifyUuid = "",
+                    isDefault = (arguments["default"] ?: false) as Boolean,
+                    internalCardType = null,
+                    creditCard = CreditCard(
+                        number = arguments["number"] as String,
+                        expMonth = arguments["exp_month"] as String,
+                        expYear = arguments["exp_year"] as String,
+                        holderName = arguments["holder_name"] as String,
+                        brand = arguments["brand"] as String,
+                    ),
+                    tokenization = null
                 )
             } else {
                 it

@@ -1,3 +1,8 @@
+## 1.0.3
+1. Generic Payment processing Screen
+2. Card face design
+3. Enable/ unbind password less alipay HK
+
 ## 1.0.2
 1. Fix the obfuscation conflict issue of Android
 
