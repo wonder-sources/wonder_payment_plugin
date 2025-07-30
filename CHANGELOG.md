@@ -1,3 +1,6 @@
+## 1.0.4
+1. Fix the bug where Android fails to retrieve the default payment method.
+
 ## 1.0.3
 1. Generic Payment processing Screen
 2. Card face design
