@@ -17,7 +17,20 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final amount = 1.0;
   final currency = "HKD";
-  final sessionId = "YOUR_SESSION_ID";
+
+  // Environment variables
+  static const sessionId =
+      String.fromEnvironment('SESSION_ID', defaultValue: 'default_session_id');
+  static const appId = String.fromEnvironment('APP_ID');
+  static const customerId = String.fromEnvironment('CUSTOMER_ID');
+  static const appScheme = String.fromEnvironment('APP_SCHEME');
+  static const wechatAppId = String.fromEnvironment('WECHAT_APP_ID');
+  static const universalLink = String.fromEnvironment('APP_UNIVERSAL_LINK');
+  static const merchantName = String.fromEnvironment('MERCHANT_NAME');
+  static const applePayMerchantId =
+      String.fromEnvironment('APPLE_PAY_MERCHANT_IDENTIFIER');
+  static const googlePayMerchantId =
+      String.fromEnvironment('GOOGLE_PAY_MERCHANT_ID');
 
   late var paymentIntent = PaymentIntent(
     amount: amount,
@@ -41,20 +54,21 @@ class _MyAppState extends State<MyApp> {
       paymentConfig: PaymentConfig(
         // [staging | alpha | production]
         environment: PaymentEnvironment.staging,
-        appId: "YOUR_APP_ID",
-        fromScheme: "YOUR_APP_SCHEME",
+        appId: appId,
+        customerId: customerId,
+        fromScheme: appScheme,
         wechat: WechatConfig(
-          appId: "WECHAT_APP_ID",
-          universalLink: "YOUR_APP_UNIVERSAL_LINK",
+          appId: wechatAppId,
+          universalLink: universalLink,
         ),
         applePay: ApplePayConfig(
-          merchantIdentifier: 'YOUR_MERCHANT_IDENTIFIER',
-          merchantName: 'YOUR_MERCHANT_NAME',
+          merchantIdentifier: applePayMerchantId,
+          merchantName: merchantName,
           countryCode: 'HK',
         ),
         googlePay: GooglePayConfig(
-          merchantName: 'YOUR_MERCHANT_NAME',
-          merchantId: 'YOUR_MERCHANT_IDENTIFIER',
+          merchantName: merchantName,
+          merchantId: googlePayMerchantId,
           countryCode: 'HK',
           currencyCode: 'HKD',
         ),

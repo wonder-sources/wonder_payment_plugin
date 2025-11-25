@@ -39,7 +39,16 @@ class WonderPaymentPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 val uiConfigMap: Map<String, Any?> = call.argument("uiConfig") ?: mapOf()
                 val uiConfig = DataConvert.toUIConfig(uiConfigMap)
 
-                WonderPayment.initConfig(paymentConfig, uiConfig)
+                WonderPayment.initConfig(paymentConfig, uiConfig) { level, message ->
+                    activity.runOnUiThread {
+                        channel.invokeMethod(
+                            "log", mapOf(
+                                "level" to level.value,
+                                "message" to message
+                            )
+                        )
+                    }
+                }
                 result.success(true)
             } catch (e: Exception) {
                 Log.e(TAG, e.toString())
@@ -86,7 +95,10 @@ class WonderPaymentPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 }
             }
         } else if (call.method == "select") {
-            WonderPayment.select(activity) {
+            val filterOptions =
+                DataConvert.toFilterOptions(call.argument("filterOptions") as Map<String, Any?>?)
+
+            WonderPayment.select(activity, filterOptions) {
                 if (it != null) {
                     result.success(DataConvert.toMap(it))
                 } else {

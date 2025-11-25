@@ -1,0 +1,11 @@
+{
+    "SESSION_ID": "your_session_id_here",
+    "APP_ID": "your_app_id_here",
+    "CUSTOMER_ID": "your_customer_id_here",
+    "APP_SCHEME": "your_app_scheme_here",
+    "APP_UNIVERSAL_LINK": "https://your-app.com/payment",
+    "WECHAT_APP_ID": "your_wechat_app_id_here",
+    "MERCHANT_NAME": "Your Merchant Name",
+    "APPLE_PAY_MERCHANT_IDENTIFIER": "merchant.your.app.identifier",
+    "GOOGLE_PAY_MERCHANT_ID": "your_google_pay_merchant_id_here"
+}

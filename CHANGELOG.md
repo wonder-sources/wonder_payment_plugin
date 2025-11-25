@@ -1,3 +1,10 @@
+## 1.0.5
+1. Disable DebitCard for pre-authorization transactions
+2. Adjust the order of bank Brand icons
+3. Add a new "supportedPaymentModes" parameter to control transaction types
+4. Add log write-back functionality
+5. Support PSP mode for Google Pay
+
 ## 1.0.4
 1. Fix the bug where Android fails to retrieve the default payment method.
 

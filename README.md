@@ -16,7 +16,7 @@ The Wonder Payment Plugin is a powerful and versatile Flutter plugin designed to
 
 ```js
 dependencies:
-  wonder_payment_plugin: ^1.0.1
+  wonder_payment_plugin: ^1.0.5
 ```
 #### 2. If it is iOS, 
 ##### In your <font color="green">Info.plist</font>, add the following lines:

@@ -3,6 +3,8 @@ import 'package:wonder_payment_plugin/wonder_payment_plugin.dart';
 
 import 'wonder_payment_plugin_method_channel.dart';
 
+import 'src/log_handler.dart';
+
 abstract class WonderPaymentPluginPlatform extends PlatformInterface {
   /// Constructs a WonderPaymentPluginPlatform.
   WonderPaymentPluginPlatform() : super(token: _token);
@@ -25,7 +27,11 @@ abstract class WonderPaymentPluginPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<bool> init({PaymentConfig? paymentConfig, UIConfig? uiConfig}) {
+  Future<bool> init({
+    PaymentConfig? paymentConfig,
+    UIConfig? uiConfig,
+    LogHandler? logHandler,
+  }) {
     throw UnimplementedError('init() has not been implemented.');
   }
 
@@ -45,7 +51,7 @@ abstract class WonderPaymentPluginPlatform extends PlatformInterface {
     throw UnimplementedError('present() has not been implemented.');
   }
 
-  Future<PaymentMethod?> select() {
+  Future<PaymentMethod?> select({FilterOptions? filterOptions}) {
     throw UnimplementedError('select() has not been implemented.');
   }
 

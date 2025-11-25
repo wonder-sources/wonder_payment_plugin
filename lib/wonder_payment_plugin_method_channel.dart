@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:wonder_payment_plugin/wonder_payment_plugin.dart';
 
 import 'wonder_payment_plugin_platform_interface.dart';
+import 'src/log_handler.dart';
 
 /// An implementation of [WonderPaymentPluginPlatform] that uses method channels.
 class MethodChannelWonderPaymentPlugin extends WonderPaymentPluginPlatform {
@@ -11,7 +12,18 @@ class MethodChannelWonderPaymentPlugin extends WonderPaymentPluginPlatform {
   final methodChannel = const MethodChannel('wonder_payment_plugin');
 
   @override
-  Future<bool> init({PaymentConfig? paymentConfig, UIConfig? uiConfig}) async {
+  Future<bool> init({
+    PaymentConfig? paymentConfig,
+    UIConfig? uiConfig,
+    LogHandler? logHandler,
+  }) async {
+    methodChannel.setMethodCallHandler((call) async {
+      if (call.method == 'log') {
+        int level = call.arguments['level'] as int;
+        String message = call.arguments['message'] as String;
+        logHandler?.log(LogLevel.fromValue(level), message);
+      }
+    });
     return await methodChannel.invokeMethod(
       'init',
       {
@@ -67,8 +79,10 @@ class MethodChannelWonderPaymentPlugin extends WonderPaymentPluginPlatform {
   }
 
   @override
-  Future<PaymentMethod?> select() async {
-    final resultJson = await methodChannel.invokeMethod('select');
+  Future<PaymentMethod?> select({FilterOptions? filterOptions}) async {
+    final resultJson = await methodChannel.invokeMethod('select', {
+      'filterOptions': filterOptions?.toJson(),
+    });
     if (resultJson is Map) {
       return PaymentMethod.fromJson(resultJson.cast<String, dynamic>());
     } else {

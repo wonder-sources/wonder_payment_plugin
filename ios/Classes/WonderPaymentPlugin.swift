@@ -3,9 +3,13 @@ import UIKit
 import WonderPaymentSDK
 
 public class WonderPaymentPlugin: NSObject, FlutterPlugin {
+    
+    var flutterMethodChannel: FlutterMethodChannel?
+    
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "wonder_payment_plugin", binaryMessenger: registrar.messenger())
         let instance = WonderPaymentPlugin()
+        instance.flutterMethodChannel = channel
         registrar.addMethodCallDelegate(instance, channel: channel)
         FlutterPatch.patch()
     }
@@ -25,7 +29,13 @@ public class WonderPaymentPlugin: NSObject, FlutterPlugin {
             let uiConfigJson = json["uiConfig"] as? NSDictionary
             let paymentConfig = PaymentConfig.from(json: paymentConfigJson)
             let uiConfig = UIConfig.from(json: uiConfigJson)
-            WonderPayment.initSDK(paymentConfig: paymentConfig, uiConfig: uiConfig)
+            WonderPayment.initSDK(paymentConfig: paymentConfig, uiConfig: uiConfig) {
+                [weak self] level, message in
+                self?.flutterMethodChannel?.invokeMethod("log", arguments: [
+                    "level": level.rawValue,
+                    "message": message
+                ])
+            }
             result(true)
         case "getPaymentConfig":
             result(WonderPayment.paymentConfig.toJson())
@@ -54,7 +64,13 @@ public class WonderPaymentPlugin: NSObject, FlutterPlugin {
                 result(paymentResult.toJson())
             }
         case "select":
-            WonderPayment.select() {
+            guard let json = call.arguments as? NSDictionary else {
+                result(argumentsError)
+                return
+            }
+            let filterOptionsJson = json["filterOptions"] as? NSDictionary
+            let filterOptions = FilterOptions.from(json: filterOptionsJson)
+            WonderPayment.select(filterOptions: filterOptions) {
                 paymentMethod in
                 result(paymentMethod.toJson())
             }

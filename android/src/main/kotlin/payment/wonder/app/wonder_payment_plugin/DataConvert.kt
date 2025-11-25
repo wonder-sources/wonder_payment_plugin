@@ -5,6 +5,7 @@ import com.wonder.payment.sdk.model.CardInputModel
 import com.wonder.payment.sdk.model.CreditCard
 import com.wonder.payment.sdk.model.DisplayStyle
 import com.wonder.payment.sdk.model.Extra
+import com.wonder.payment.sdk.model.FilterOptions
 import com.wonder.payment.sdk.model.GoogleConfig
 import com.wonder.payment.sdk.model.LineItem
 import com.wonder.payment.sdk.model.PayType
@@ -12,6 +13,7 @@ import com.wonder.payment.sdk.model.PaymentConfig
 import com.wonder.payment.sdk.model.PaymentEnv
 import com.wonder.payment.sdk.model.PaymentIntent
 import com.wonder.payment.sdk.model.PaymentMethod
+import com.wonder.payment.sdk.model.PaymentMode
 import com.wonder.payment.sdk.model.PaymentTokenModel
 import com.wonder.payment.sdk.model.UIConfig
 import java.util.Locale
@@ -163,6 +165,7 @@ object DataConvert {
         val paymentMethod = map["paymentMethod"] as Map<String, Any?>?
         val lineItems = map["lineItems"] as List<Map<String, Any?>>?
         val extra = map["extra"] as Map<String, Any?>?
+        val supportedPaymentModes = map["supportedPaymentModes"] as List<String>?
 
         var lineItemList: List<LineItem>? = null
         if (lineItems != null) {
@@ -186,7 +189,7 @@ object DataConvert {
             amount = map["amount"] as Double,
             currency = map["currency"] as String,
             orderNumber = map["orderNumber"] as String,
-            preAuthModeForSales = map["preAuthModeForSales"] as Boolean,
+            supportedPaymentModes = supportedPaymentModes?.map { paymentModeFromString(it) },
             paymentMethod = paymentMethod?.let {
                 toPaymentMethod(it)
             },
@@ -194,6 +197,18 @@ object DataConvert {
             extra = extraModel
         )
     }
+
+
+    fun toFilterOptions(map: Map<String, Any?>?): FilterOptions? {
+        if (map.isNullOrEmpty()) return null
+
+        val supportedPaymentModes = map["supportedPaymentModes"] as List<String>?
+
+        return FilterOptions(
+            supportedPaymentModes = supportedPaymentModes?.map { paymentModeFromString(it) },
+        )
+    }
+
 
     fun toPaymentMethod(map: Map<String, Any?>): PaymentMethod? {
         val payType = PayType.fromString(map["type"] as String?) ?: return null
@@ -215,6 +230,7 @@ object DataConvert {
                         expYear = arguments["exp_year"] as String,
                         holderName = arguments["holder_name"] as String,
                         brand = arguments["brand"] as String,
+                        cardType = arguments["card_type"] as String?,
                     ),
                     tokenization = null
                 )
@@ -289,4 +305,21 @@ object DataConvert {
         }
     }
 
+    private fun paymentModeFromString(strValue: String): PaymentMode {
+        return when (strValue) {
+            "sale" -> PaymentMode.SALE
+            "preAuth" -> PaymentMode.PRE_AUTH
+            "autoDebit" -> PaymentMode.AUTO_DEBIT
+            else -> PaymentMode.SALE
+        }
+    }
+
+    private fun paymentModeToString(enumValue: PaymentMode): String {
+        return when (enumValue) {
+            PaymentMode.SALE -> "sale"
+            PaymentMode.PRE_AUTH -> "preAuth"
+            PaymentMode.AUTO_DEBIT -> "autoDebit"
+            else -> "sale"
+        }
+    }
 }

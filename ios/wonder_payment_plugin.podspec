@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'wonder_payment_plugin'
-  s.version          = '1.0.1'
+  s.version          = '1.0.5'
   s.summary          = 'Wonder Payment Plugin.'
   s.description      = <<-DESC
 Wonder Flutter Payment SDK for iOS and Android devices.
@@ -19,6 +19,6 @@ Wonder Flutter Payment SDK for iOS and Android devices.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
 
-  s.dependency 'WonderPaymentSDK', '0.8.1'
+  s.dependency 'WonderPaymentSDK', '0.8.2'
   s.static_framework = true
 end

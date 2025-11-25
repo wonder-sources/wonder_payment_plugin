@@ -1,6 +1,7 @@
 import 'extra.dart';
 import 'line_item.dart';
 import 'payment_method.dart';
+import 'payment_mode.dart';
 
 class PaymentIntent {
   double amount;
@@ -8,7 +9,7 @@ class PaymentIntent {
   String orderNumber;
   PaymentMethod? paymentMethod;
   List<LineItem>? lineItems;
-  bool preAuthModeForSales;
+  List<PaymentMode> supportedPaymentModes;
   Extra? extra;
 
   PaymentIntent({
@@ -17,7 +18,7 @@ class PaymentIntent {
     required this.orderNumber,
     this.paymentMethod,
     this.lineItems,
-    this.preAuthModeForSales = false,
+    this.supportedPaymentModes = const [],
     this.extra,
   });
 
@@ -35,7 +36,7 @@ class PaymentIntent {
       orderNumber: orderNumber,
       paymentMethod: method,
       lineItems: lineItems?.map((e) => e).toList(),
-      preAuthModeForSales: preAuthModeForSales,
+      supportedPaymentModes: supportedPaymentModes,
       extra: extra?.copy(),
     );
   }
@@ -46,6 +47,15 @@ class PaymentIntent {
       List list = json['lineItems'] as List;
       lineItems = list.map((e) => LineItem.fromJson(e)).toList();
     }
+    List<PaymentMode> supportedPaymentModes = [];
+    if (json['supportedPaymentModes'] != null) {
+      List list = json['supportedPaymentModes'] as List;
+      supportedPaymentModes = list
+          .map((e) => PaymentModeExtension.fromString(e as String))
+          .where((mode) => mode != null)
+          .cast<PaymentMode>()
+          .toList();
+    }
     return PaymentIntent(
       amount: json['amount'],
       currency: json['currency'],
@@ -54,7 +64,7 @@ class PaymentIntent {
           ? PaymentMethod.fromJson(json['paymentMethod'])
           : null,
       lineItems: lineItems,
-      preAuthModeForSales: json['preAuthModeForSales'],
+      supportedPaymentModes: supportedPaymentModes,
       extra: Extra.fromJson(json['extra']),
     );
   }
@@ -66,7 +76,7 @@ class PaymentIntent {
       'orderNumber': orderNumber,
       'paymentMethod': paymentMethod?.toJson(),
       'lineItems': lineItems?.map((e) => e.toJson()).toList(),
-      'preAuthModeForSales': preAuthModeForSales,
+      'supportedPaymentModes': supportedPaymentModes.map((mode) => mode.rawValue).toList(),
       'extra': extra?.toJson(),
     };
   }
