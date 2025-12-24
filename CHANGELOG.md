@@ -1,3 +1,6 @@
+## 1.0.6
+1. Fixed an issue on iOS where credit card options were not displayed when the customerId was empty.
+
 ## 1.0.5
 1. Disable DebitCard for pre-authorization transactions
 2. Adjust the order of bank Brand icons
